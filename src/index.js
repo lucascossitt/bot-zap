@@ -2,6 +2,12 @@ const zap = require('@open-wa/wa-automate')
 const mime = require('mime-types')
 const commandHandler = require('./utils/commandHandler')
 const crons = require('./utils/crons')
+const path = require('path')
+const ffmpeg = require('fluent-ffmpeg')
+const {Readable} = require('stream')
+const fs = require('fs')
+const whisper = require('./services/OpenAI/whisper')
+
 const prefix = '!'
 
 zap.create({
@@ -43,6 +49,34 @@ zap.create({
 
                     if (message.text.toLowerCase().split(' ').includes('duvido')) {
                         await client.reply(message.chatId, 'MEU PAU NO SEU OUVIDO', message.id)
+                    }
+
+                    if (message.type === 'ptt') {
+                        await zap
+                            .decryptMedia(message)
+                            .then(async mediaData => {
+                                if (!fs.existsSync(path.resolve(__dirname, '../temp')))
+                                    fs.mkdirSync(path.resolve(__dirname, '../temp'))
+
+                                const filePath = path.resolve(__dirname, `../temp/${message.t}.mp3`)
+                                const stream = Readable.from(mediaData)
+                                await ffmpeg(stream)
+                                    .audioBitrate(128)
+                                    .save(filePath)
+                                    .on('error', err => console.error(err))
+                                    .on('end', async () => {
+                                        await whisper(fs.createReadStream(filePath))
+                                            .then(async result => {
+                                                if (result.text) {
+                                                    await client.reply(message.chatId, result.text, message.id)
+                                                }
+                                            })
+                                            .catch(err => console.error(err))
+
+                                        await fs.unlinkSync(filePath)
+                                    })
+                            })
+                            .catch(err => console.error(err))
                     }
 
                     if (message.text.startsWith(prefix)) {
