@@ -110,6 +110,12 @@ module.exports = async function (client) {
     cron.schedule('0 0 * * * *', async () => {
         const xingamentoEscolhido = xingamentos[Math.floor(Math.random() * xingamentos.length)]
         await client.sendTextWithMentions(client.grupoTcholes, xingamentoEscolhido, false, ['554499940165@c.us'])
-        // await client.sendTextWithMentions('120363053408537500@g.us', xingamentoEscolhido, false, ['554499940165@c.us'])
+    })
+
+    cron.schedule('0 0 15 * * *', async () => {
+        await client.getGroupMembers(client.grupoTcholes).then(async members => {
+            const membersId = members.map(a => a.id)
+            await client.sendTextWithMentions(client.grupoTcholes, '*Manda foto de agora ai gatinha*', false, membersId)
+        })
     })
 }
