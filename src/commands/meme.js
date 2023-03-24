@@ -3,6 +3,7 @@ const memes = require('random-memes')
 module.exports = {
     name: 'meme',
     descricao: 'Envia um meme aleatório',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
             await client.simulateTyping(message.chatId, true)

@@ -3,6 +3,7 @@ const zap = require('@open-wa/wa-automate')
 module.exports = {
     name: 'sticker',
     descricao: 'Transforma uma imagem em figurinha',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
             if (message.type === 'image') {

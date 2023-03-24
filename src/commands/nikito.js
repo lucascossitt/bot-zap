@@ -1,6 +1,7 @@
 module.exports = {
     name: 'nikito',
     descricao: 'Diz quantas vezes o nikito atrasou pro trabalho',
+    showInHelp: false,
     run: async function (client, message, args) {
         try {
             client.countNikito++

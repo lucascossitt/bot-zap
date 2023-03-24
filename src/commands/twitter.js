@@ -3,6 +3,7 @@ const twitterDownload = require('twitter-url-direct')
 module.exports = {
     name: 'twitter',
     descricao: 'Baixa um video do twitter',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
             const url = args[0]

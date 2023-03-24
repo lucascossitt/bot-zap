@@ -1,6 +1,7 @@
 module.exports = {
     name: 'eval',
     descricao: 'Apenas para o desenvolvedor',
+    showInHelp: false,
     run: async function (client, message, args) {
         try {
             if (message.author === client.owner) {

@@ -5,6 +5,7 @@ const fs = require('fs')
 module.exports = {
     name: 'tts',
     descricao: 'Converte um texto para audio',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
             const texto = args.join(' ')

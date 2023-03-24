@@ -3,6 +3,7 @@ const tiktokDownload = require('tiktok-video-downloader')
 module.exports = {
     name: 'tiktok',
     descricao: 'Baixa um video do tiktok',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
             const url = args[0]

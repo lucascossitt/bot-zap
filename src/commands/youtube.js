@@ -7,6 +7,7 @@ const path = require('path')
 module.exports = {
     name: 'youtube',
     descricao: 'Baixa um audio do youtube',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
 

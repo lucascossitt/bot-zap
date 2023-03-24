@@ -1,6 +1,7 @@
 module.exports = {
     name: 'avisar',
     descricao: 'Envia um aviso marcando todos do grupo (DESENVOLVEDOR ONLY)',
+    showInHelp: false,
     run: async function (client, message, args) {
         try {
             if (message.author === client.owner) {

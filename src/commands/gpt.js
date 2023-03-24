@@ -1,6 +1,7 @@
 module.exports = {
     name: 'gpt',
     descricao: 'Converse com o chat GPT',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
 

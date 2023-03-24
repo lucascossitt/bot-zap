@@ -3,6 +3,7 @@ const reddit = require('reddit-posts')
 module.exports = {
     name: 'copypasta',
     descricao: 'Envia uma copypasta aleatória',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
             await client.simulateTyping(message.chatId, true)
