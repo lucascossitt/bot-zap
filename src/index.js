@@ -8,8 +8,6 @@ const {Readable} = require('stream')
 const fs = require('fs')
 const whisper = require('./services/OpenAI/whisper')
 
-const prefix = '!'
-
 zap.create({
     sessionId: "BOT_TCHOLES",
     multiDevice: true,
@@ -23,7 +21,9 @@ zap.create({
     qrTimeout: 0,
     useChrome: true
 }).then(async client => {
+    const {default: PQueue} = await import('p-queue')
 
+    client.prefix = '!'
     client.commands = new Map()
     client.conversasChatGPT = []
     client.countCanal = 1
@@ -37,9 +37,14 @@ zap.create({
     client.owner = '554498561224@c.us'
     client.grupoTcholes = '120363021769457254@g.us'
     client.bot = '554488441949@c.us'
+    client.queue = new PQueue({
+        concurrency: 1,
+        autoStart: false
+    })
 
     await commandHandler(client)
         .then(async () => {
+            await client.queue.start()
             await crons(client)
             await client.onMessage(async message => {
                 try {
@@ -81,11 +86,14 @@ zap.create({
 
                     if (message.text.startsWith(prefix)) {
                         const args = message.text.split(' ')
-                        const commandName = args.shift().replace(prefix, '').toLowerCase()
+                        const commandName = args.shift().replace(client.prefix, '').toLowerCase()
 
                         let command = client.commands.get(commandName)
                         if (command) {
-                            command.run(client, message, args)
+                            if (message.author === client.owner)
+                                client.queue.add(async () => await command.run(client, message, args), {priority: 1})
+                            else
+                                client.queue.add(async () => await command.run(client, message, args), {priority: 0})
                         }
                     }
                 } catch (err) {
