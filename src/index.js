@@ -84,7 +84,7 @@ zap.create({
                             .catch(err => console.error(err))
                     }
 
-                    if (message.text.startsWith(prefix)) {
+                    if (message.text.startsWith(client.prefix)) {
                         const args = message.text.split(' ')
                         const commandName = args.shift().replace(client.prefix, '').toLowerCase()
 
