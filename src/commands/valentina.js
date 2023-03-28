@@ -5,7 +5,7 @@ module.exports = {
     run: async function (client, message, args) {
         try {
             client.countValentina++
-            await client.sendText(message.chatId, `Valentina deve *${client.countMorera}%* cervejas para meu criador`)
+            await client.sendText(message.chatId, `Valentina deve *${client.countValentina}* cervejas para meu criador`)
         } catch (err) {
             console.error(err)
         }
