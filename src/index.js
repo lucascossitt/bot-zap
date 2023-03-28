@@ -33,9 +33,9 @@ zap.create({
     client.countLevorato = 1
     client.countAkio = 1
     client.countCarlos = 1
+    client.countValentina = 1
     client.owner = '554498561224@c.us'
     client.grupoTcholes = '120363021769457254@g.us'
-    client.grupoBot = '120363050664168601@g.us'
     client.bot = '554488441949@c.us'
 
     await commandHandler(client)
