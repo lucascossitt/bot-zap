@@ -48,28 +48,28 @@ zap.create({
             await crons(client)
             await client.onMessage(async message => {
                 try {
-                    if (message.type === 'chat') {
-                        if (message.content.split(' ').includes('deus')) {
-                            await client.reply(message.chatId, 'NÃO SE ESCREVE DEUS COM D MINUSCULO SEU ARROMBADO', message.id)
-                        }
+                    if (message.text.split(' ').includes('deus')) {
+                        await client.reply(message.chatId, 'NÃO SE ESCREVE DEUS COM D MINUSCULO SEU ARROMBADO', message.id)
+                    }
 
-                        if (message.content.toLowerCase().split(' ').includes('duvido')) {
-                            await client.reply(message.chatId, 'MEU PAU NO SEU OUVIDO', message.id)
-                        }
+                    if (message.text.toLowerCase().split(' ').includes('duvido')) {
+                        await client.reply(message.chatId, 'MEU PAU NO SEU OUVIDO', message.id)
+                    }
 
-                        if (message.content.startsWith(client.prefix)) {
-                            const args = message.content.split(' ')
-                            const commandName = args.shift().replace(client.prefix, '').toLowerCase()
+                    if (message.text.startsWith(client.prefix)) {
+                        const args = message.text.split(' ')
+                        const commandName = args.shift().replace(client.prefix, '').toLowerCase()
 
-                            let command = client.commands.get(commandName)
-                            if (command) {
-                                if (message.author === client.owner)
-                                    client.queue.add(async () => await command.run(client, message, args), {priority: 1})
-                                else
-                                    client.queue.add(async () => await command.run(client, message, args), {priority: 0})
-                            }
+                        let command = client.commands.get(commandName)
+                        if (command) {
+                            if (message.author === client.owner)
+                                client.queue.add(async () => await command.run(client, message, args), {priority: 1})
+                            else
+                                client.queue.add(async () => await command.run(client, message, args), {priority: 0})
                         }
-                    } else if (message.type === 'ptt') {
+                    }
+
+                    if (message.type === 'ptt') {
                         await zap
                             .decryptMedia(message)
                             .then(async mediaData => {
