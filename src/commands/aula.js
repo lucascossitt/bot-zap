@@ -22,10 +22,11 @@ module.exports = {
 
             python.on('close', async () => {
                 if (json.length > 0) {
-                    const texto = json.map(a => `Horario: ${a.horario}\nBloco: ${a.bloco}\nLab: ${a.laboratorio}\nAula: ${a.reserva}`).join('\n\n')
+                    let texto = json.map(a => `Horario: ${a.horario}\nBloco: ${a.bloco}\nLab: ${a.laboratorio}\nAula: ${a.reserva}`).join('\n\n')
+                    texto += '\n\n_OBS: Este comando mostra apenas as aulas em laboratórios!_'
                     await client.sendText(message.chatId, texto)
                 } else {
-                    await client.sendText(message.chatId, 'Nenhum resultado')
+                    await client.sendText(message.chatId, 'Nenhum resultado\n\n_OBS: Este comando mostra apenas as aulas em laboratórios_')
                 }
             })
         } catch (err) {

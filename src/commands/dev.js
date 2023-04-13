@@ -5,7 +5,7 @@ module.exports = {
     run: async function (client, message, args) {
         const texto = args.join(' ')
         if (texto) {
-            await client.sendText(client.owner, texto)
+            await client.sendText(client.owner, `${message.notifyName} - ${message.from}\n\n${texto}`)
             await client.react(message.id, '👍')
         }
     }

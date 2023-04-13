@@ -10,7 +10,7 @@ module.exports = {
             await memes
                 .random()
                 .then(async meme => {
-                    await client.sendImage(message.chatId, meme.image)
+                    await client.sendImage(message.chatId, meme.image, 'meme.jpg', meme.caption)
                     await client.simulateTyping(message.chatId, false)
                 })
                 .catch(err => console.error(err))
