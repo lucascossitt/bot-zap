@@ -31,6 +31,7 @@ module.exports = {
                 await ffmpeg(stream)
                     .audioBitrate(128)
                     .save(downloadPath)
+                    .on('error', err => console.error(err))
                     .on('end', async () => {
                         await client.sendAudio(message.chatId, downloadPath, message.id)
                         await fs.unlinkSync(downloadPath)

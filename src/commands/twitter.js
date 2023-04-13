@@ -1,4 +1,4 @@
-const twitterDownload = require('twitter-url-direct')
+const videoUrlLink = require('video-url-link')
 
 module.exports = {
     name: 'twitter',
@@ -9,13 +9,15 @@ module.exports = {
             const url = args[0]
             if (url) {
                 await client.simulateTyping(message.chatId, true)
-                await twitterDownload(url)
-                    .then(async result => {
-                        const urlDownload = result.download[result.download.length - 1].url
+                videoUrlLink.twitter.getInfo(url, {}, async function (err, data) {
+                    if (err) {
+                        console.error(err)
+                    } else {
+                        const urlDownload = data.variants.filter(a => a.content_type === 'video/mp4').sort((a, b) => b.bitrate - a.bitrate)[0].url
                         await client.sendImage(message.chatId, urlDownload, 'video.mp4', '')
                         await client.simulateTyping(message.chatId, false)
-                    })
-                    .catch(err => console.error(err))
+                    }
+                })
             }
         } catch (err) {
             console.error(err)
