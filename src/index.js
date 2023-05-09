@@ -25,7 +25,7 @@ zap.create({
 
     client.prefix = '!'
     client.commands = new Map()
-    client.conversasChatGPT = []
+    client.conversasChatGPT = new Map()
     client.countCanal = 1
     client.countRedondo = 1
     client.countNikito = 1
@@ -48,6 +48,7 @@ zap.create({
             await crons(client)
             await client.onMessage(async message => {
                 try {
+                    await client.sendSeen(message.chatId)
                     if (message.text) {
                         if (message.text.split(' ').includes('deus')) {
                             await client.reply(message.chatId, 'NÃO SE ESCREVE DEUS COM D MINUSCULO SEU ARROMBADO', message.id)
@@ -55,6 +56,10 @@ zap.create({
 
                         if (message.text.toLowerCase().split(' ').includes('duvido')) {
                             await client.reply(message.chatId, 'MEU PAU NO SEU OUVIDO', message.id)
+                        }
+
+                        if (message.text.toLowerCase().split(' ').includes('atenção')) {
+                            await client.reply(message.chatId, 'MEU PAU NA SUA MÃO', message.id)
                         }
 
                         if (message.text.startsWith(client.prefix)) {

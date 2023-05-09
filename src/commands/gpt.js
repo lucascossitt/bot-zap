@@ -5,20 +5,21 @@ module.exports = {
     run: async function (client, message, args) {
         try {
 
-            // if (message.chatId !== client.grupoTcholes && message.author !== client.owner) {
-            //     return await client.react(message.id, '❌')
-            // }
-
             const {ChatGPTAPI} = await import('chatgpt')
-            const chatGPT = new ChatGPTAPI({apiKey: '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'})
+            const chatGPT = new ChatGPTAPI({
+                apiKey: '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',
+                completionParams: {
+                    model: 'gpt-4'
+                }
+            })
 
             const texto = args.join(' ')
             if (texto) {
-                const conversa = client.conversasChatGPT.find(a => a.userId === message.author)
+                const conversa = client.conversasChatGPT.get(message.author)
 
                 if (texto === 'encerrar') {
                     if (conversa) {
-                        client.conversasChatGPT.splice(client.conversasChatGPT.indexOf(conversa), 1)
+                        client.conversasChatGPT.delete(message.author)
                     }
                     return await client.react(message.id, '👍')
                 }
@@ -27,17 +28,11 @@ module.exports = {
                     await client.simulateTyping(message.chatId, true)
                     await chatGPT
                         .sendMessage(texto, {
-                            conversationId: conversa.conversationId,
                             parentMessageId: conversa.id
                         })
                         .then(async response => {
-                            client.conversasChatGPT.splice(client.conversasChatGPT.indexOf(conversa), 1)
-                            client.conversasChatGPT.push({
-                                userId: message.author,
-                                conversationId: response.conversationId,
-                                id: response.id,
-                                data: new Date()
-                            })
+                            client.conversasChatGPT.delete(message.author)
+                            client.conversasChatGPT.set(message.author, {id: response.id})
                             await client.reply(message.chatId, response.text, message.id)
                             await client.simulateTyping(message.chatId, false)
                         })
@@ -47,12 +42,7 @@ module.exports = {
                     await chatGPT
                         .sendMessage(texto)
                         .then(async response => {
-                            client.conversasChatGPT.push({
-                                userId: message.author,
-                                conversationId: response.conversationId,
-                                id: response.id,
-                                data: new Date()
-                            })
+                            client.conversasChatGPT.set(message.author, {id: response.id})
                             await client.reply(message.chatId, response.text, message.id)
                             await client.simulateTyping(message.chatId, false)
                         })
