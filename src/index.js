@@ -34,6 +34,7 @@ zap.create({
     client.countAkio = 1
     client.countCarlos = 1
     client.countValentina = 1
+    client.countAndre = 1
     client.owner = '554498561224@c.us'
     client.grupoTcholes = '120363021769457254@g.us'
     client.bot = '554488441949@c.us'

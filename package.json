@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@giphy/js-fetch-api": "^4.9.0",
-    "@open-wa/wa-automate": "^4.65.1",
+    "@giphy/js-fetch-api": "^4.9.1",
+    "@open-wa/wa-automate": "^4.66.3",
     "axios": "^1.4.0",
     "chatgpt": "^5.2.4",
     "fluent-ffmpeg": "^2.1.2",
