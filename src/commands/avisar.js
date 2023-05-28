@@ -4,7 +4,9 @@ module.exports = {
     showInHelp: false,
     run: async function (client, message, args) {
         try {
-            if (message.author === client.owner || message.isAdmin) {
+            const admins = await client.getGroupAdmins(message.chatId)
+            const isAdmin = admins.includes(message.author)
+            if (message.author === client.owner || isAdmin) {
                 const aviso = args.join(' ')
                 await client.getGroupMembers(message.chatId).then(async members => {
                     const membersId = members.map(a => a.id)
