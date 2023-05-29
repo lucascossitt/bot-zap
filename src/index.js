@@ -8,6 +8,8 @@ const fs = require('fs')
 const whisper = require('./services/OpenAI/whisper')
 const messageDeletedEvent = require('./events/messageDeleted')
 
+const emojis = ['🤫', '🤭']
+
 zap.create({
     sessionId: "BOT_TCHOLES",
     multiDevice: true,
@@ -49,6 +51,14 @@ zap.create({
             await crons(client)
             await client.onMessage(async message => {
                 try {
+
+                    if (message.author === '554488471531@c.us') {
+                        const randomIndex = Math.floor(Math.random() * emojis.length)
+                        const randomEmoji = emojis[randomIndex]
+
+                        await client.react(message.id, randomEmoji)
+                    }
+
                     await client.sendSeen(message.chatId)
                     if (message.text) {
                         if (message.text.split(' ').includes('deus')) {
