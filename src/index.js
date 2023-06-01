@@ -7,6 +7,9 @@ const {Readable} = require('stream')
 const fs = require('fs')
 const whisper = require('./services/OpenAI/whisper')
 const messageDeletedEvent = require('./events/messageDeleted')
+const mongoose = require('mongoose')
+const userSchema = require('./schemas/user')
+mongoose.set('strictQuery', true)
 
 const emojis = ['🤫', '🤭']
 
@@ -45,6 +48,7 @@ zap.create({
         autoStart: false
     })
 
+    await mongoose.connect('mongodb://172.17.0.3:27017/bot-zap')
     await commandHandler(client)
         .then(async () => {
             await client.queue.start()
@@ -61,6 +65,20 @@ zap.create({
 
                     await client.sendSeen(message.chatId)
                     if (message.text) {
+
+                        let user = await userSchema.findOne({id: message.author})
+                        if (!user) {
+                            const newUser = new userSchema({
+                                id: message.author,
+                                qtdeMensagens: 1,
+                                banido: false
+                            })
+                            user = await newUser.save()
+                        } else {
+                            user = await userSchema.findOneAndUpdate({id: message.author}, {$inc: {qtdeMensagens: 1}})
+                        }
+                        message.userDb = user
+
                         if (message.text.split(' ').includes('deus')) {
                             await client.reply(message.chatId, 'NÃO SE ESCREVE DEUS COM D MINUSCULO SEU ARROMBADO', message.id)
                         }
