@@ -9,7 +9,7 @@ module.exports = async function (file) {
             form.append('model', 'whisper-1')
 
             const headers = {
-                Authorization: 'Bearer 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'
+                Authorization: 'Bearer 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'
             }
 
             axios
