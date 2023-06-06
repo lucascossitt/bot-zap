@@ -22,7 +22,7 @@ module.exports = {
 
             python.on('close', async () => {
                 if (json.length > 0) {
-                    json = json.sort((a, b) => {return a - b})
+                    json = json.sort((a, b) => {return a.horario - b.horario})
                     let texto = json.map(a => `Horario: ${a.horario}\nBloco: ${a.bloco}\nLab: ${a.laboratorio}\nAula: ${a.reserva}`).join('\n\n')
                     texto += '\n\n_OBS: Este comando mostra apenas as aulas em laboratórios!_'
                     await client.sendText(message.chatId, texto)
