@@ -8,7 +8,7 @@ module.exports = {
     run: async function (client, message, args) {
         try {
             let json;
-            const turma = args[0] || 'ESOFT5S-N-A'
+            const turma = args[0] || 'ESOFT5S'
             const pathScript = path.resolve(__dirname, '../../python/labs.py')
             const python = spawn('python3', [pathScript, turma])
 
@@ -22,6 +22,7 @@ module.exports = {
 
             python.on('close', async () => {
                 if (json.length > 0) {
+                    json = json.sort((a, b) => {return a - b})
                     let texto = json.map(a => `Horario: ${a.horario}\nBloco: ${a.bloco}\nLab: ${a.laboratorio}\nAula: ${a.reserva}`).join('\n\n')
                     texto += '\n\n_OBS: Este comando mostra apenas as aulas em laboratórios!_'
                     await client.sendText(message.chatId, texto)
