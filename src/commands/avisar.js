@@ -1,7 +1,7 @@
 module.exports = {
     name: 'avisar',
-    descricao: 'Envia um aviso marcando todos do grupo (DESENVOLVEDOR ONLY)',
-    showInHelp: false,
+    descricao: 'Envia um aviso marcando todos do grupo (Apenas para admins)',
+    showInHelp: true,
     run: async function (client, message, args) {
         try {
             const admins = await client.getGroupAdmins(message.chatId)
