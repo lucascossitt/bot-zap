@@ -4,7 +4,7 @@ const {spawn} = require('child_process')
 module.exports = {
     name: 'aula',
     descricao: 'Mostra onde possui as aulas',
-    showInHelp: true,
+    showInHelp: false,
     run: async function (client, message, args) {
         try {
             let json;

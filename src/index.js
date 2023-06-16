@@ -44,7 +44,7 @@ zap.create({
     client.grupoTcholes = '120363021769457254@g.us'
     client.bot = '554488441949@c.us'
     client.queue = new PQueue({
-        concurrency: 1,
+        concurrency: 2,
         autoStart: false
     })
 
@@ -66,18 +66,18 @@ zap.create({
                     await client.sendSeen(message.chatId)
                     if (message.text) {
 
-                        let user = await userSchema.findOne({id: message.author})
-                        if (!user) {
-                            const newUser = new userSchema({
-                                id: message.author,
-                                qtdeMensagens: 1,
-                                banido: false
-                            })
-                            user = await newUser.save()
-                        } else {
-                            user = await userSchema.findOneAndUpdate({id: message.author}, {$inc: {qtdeMensagens: 1}})
-                        }
-                        message.userDb = user
+                        // let user = await userSchema.findOne({id: message.author})
+                        // if (!user) {
+                        //     const newUser = new userSchema({
+                        //         id: message.author,
+                        //         qtdeMensagens: 1,
+                        //         banido: false
+                        //     })
+                        //     user = await newUser.save()
+                        // } else {
+                        //     user = await userSchema.findOneAndUpdate({id: message.author}, {$inc: {qtdeMensagens: 1}})
+                        // }
+                        // message.userDb = user
 
                         if (message.text.split(' ').includes('deus')) {
                             await client.reply(message.chatId, 'NÃO SE ESCREVE DEUS COM D MINUSCULO SEU ARROMBADO', message.id)
