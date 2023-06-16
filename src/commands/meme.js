@@ -1,4 +1,4 @@
-const memes = require('random-memes')
+const reddit = require('reddit-posts')
 
 module.exports = {
     name: 'meme',
@@ -6,14 +6,19 @@ module.exports = {
     showInHelp: true,
     run: async function (client, message, args) {
         try {
+            const busca = args[0] || 'darkmemers'
             await client.simulateTyping(message.chatId, true)
-            await memes
-                .random()
-                .then(async meme => {
-                    await client.sendImage(message.chatId, meme.image, 'meme.jpg', meme.caption)
+            await reddit.GetRandompost(busca)
+                .then(async response => {
+                    if (response.ImageURL && response.ImageURL.includes('.jpg')) {
+                        await client.sendImage(message.chatId, response.ImageURL, 'meme.jpg')
+                    }
                     await client.simulateTyping(message.chatId, false)
                 })
-                .catch(err => console.error(err))
+                .catch(async err => {
+                    await client.reply(message.chatId, 'Subreddit não encontrado', message.id)
+                    console.error(err)
+                })
         } catch (err) {
             console.error(err)
         }
