@@ -11,16 +11,20 @@ module.exports = {
                 await client.simulateTyping(message.chatId, true)
                 await TiktokDL(url)
                     .then(async result => {
-                        if (result.result.type === 'video') {
-                            const urlDownload = result.result.video[0]
-                            await client.sendImage(message.chatId, urlDownload, 'tiktok.mp4', '', message.id)
-                            await client.simulateTyping(message.chatId, false)
-                        } else if (result.result.type === 'image') {
-                            const images = result.result.images
-                            for await (let image of images) {
-                                await client.sendImage(message.chatId, image)
+                        if (result.status === 'success') {
+                            if (result.result.type === 'video') {
+                                const urlDownload = result.result.video[0]
+                                await client.sendImage(message.chatId, urlDownload, 'tiktok.mp4', '', message.id)
+                                await client.simulateTyping(message.chatId, false)
+                            } else if (result.result.type === 'image') {
+                                const images = result.result.images
+                                for await (let image of images) {
+                                    await client.sendImage(message.chatId, image)
+                                }
+                                await client.simulateTyping(message.chatId, false)
                             }
-                            await client.simulateTyping(message.chatId, false)
+                        } else {
+                            await client.reply(message.chatId, 'Não foi possivel fazer o download', message.id)
                         }
                     })
                     .catch(err => console.error(err))
