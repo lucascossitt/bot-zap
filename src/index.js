@@ -48,7 +48,7 @@ zap.create({
         autoStart: false
     })
 
-    await mongoose.connect('mongodb://0.0.0.0:27017/bot-zap')
+    // await mongoose.connect('mongodb://0.0.0.0:27017/bot-zap')
     await commandHandler(client)
         .then(async () => {
             await client.queue.start()
