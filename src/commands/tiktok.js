@@ -1,20 +1,27 @@
-const tiktokDownload = require('tiktok-video-downloader')
+const {TiktokDL} = require('@tobyg74/tiktok-api-dl')
 
 module.exports = {
     name: 'tiktok',
-    descricao: 'Baixa um video do tiktok',
+    descricao: 'Baixa um video ou imagem do tiktok',
     showInHelp: true,
     run: async function (client, message, args) {
         try {
             const url = args[0]
             if (url) {
                 await client.simulateTyping(message.chatId, true)
-                await tiktokDownload
-                    .getInfo(url)
+                await TiktokDL(url)
                     .then(async result => {
-                        const urlDownload = result.video.url.wm
-                        await client.sendImage(message.chatId, urlDownload, 'tiktok.mp4', '', message.id)
-                        await client.simulateTyping(message.chatId, false)
+                        if (result.result.type === 'video') {
+                            const urlDownload = result.result.video[0]
+                            await client.sendImage(message.chatId, urlDownload, 'tiktok.mp4', '', message.id)
+                            await client.simulateTyping(message.chatId, false)
+                        } else if (result.result.type === 'image') {
+                            const images = result.result.images
+                            for await (let image in images) {
+                                await client.sendImage(message.chatId, image)
+                            }
+                            await client.simulateTyping(message.chatId, false)
+                        }
                     })
                     .catch(err => console.error(err))
             }
