@@ -5,8 +5,8 @@ const fs = require('fs')
 const path = require('path')
 
 module.exports = {
-    name: 'youtube',
-    descricao: 'Baixa um video do youtube',
+    name: 'youtubeaudio',
+    descricao: 'Baixa um audio do youtube',
     showInHelp: true,
     run: async function (client, message, args) {
         try {
@@ -24,15 +24,16 @@ module.exports = {
             }
 
             if (link) {
-                const downloadPath = path.resolve(__dirname, `../temp/download-${message.t}.mp4`)
+                const downloadPath = path.resolve(__dirname, `../temp/download-${message.t}.mp3`)
 
                 await client.simulateTyping(message.chatId, true)
-                const stream = await ytdl(link, {quality: 'highest', filter: 'audioandvideo'})
+                const stream = await ytdl(link, {quality: 'highestaudio'})
                 await ffmpeg(stream)
+                    .audioBitrate(128)
                     .save(downloadPath)
                     .on('error', err => console.error(err))
                     .on('end', async () => {
-                        await client.sendImage(message.chatId, downloadPath, `download-${message.t}.mp4`, '', message.id)
+                        await client.sendAudio(message.chatId, downloadPath, message.id)
                         await fs.unlinkSync(downloadPath)
                         await client.simulateTyping(message.chatId, false)
                     })
