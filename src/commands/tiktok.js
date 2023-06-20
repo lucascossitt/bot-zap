@@ -17,7 +17,7 @@ module.exports = {
                             await client.simulateTyping(message.chatId, false)
                         } else if (result.result.type === 'image') {
                             const images = result.result.images
-                            for await (let image in images) {
+                            for await (let image of images) {
                                 await client.sendImage(message.chatId, image)
                             }
                             await client.simulateTyping(message.chatId, false)
