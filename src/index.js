@@ -11,7 +11,7 @@ const mongoose = require('mongoose')
 const userSchema = require('./schemas/user')
 mongoose.set('strictQuery', true)
 
-const emojis = ['🤫', '🤭']
+const emojis = ['🤫', '🤭', '😈', '🐒', '🐵', '🦧', '🤬', '😱', '🥵', '💩', '☠️']
 
 zap.create({
     sessionId: "BOT_TCHOLES",
