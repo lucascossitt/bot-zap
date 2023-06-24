@@ -1,17 +1,8 @@
 const zap = require('@open-wa/wa-automate')
 const commandHandler = require('./utils/commandHandler')
 const crons = require('./utils/crons')
-const path = require('path')
-const ffmpeg = require('fluent-ffmpeg')
-const {Readable} = require('stream')
-const fs = require('fs')
-const whisper = require('./services/OpenAI/whisper')
 const messageDeletedEvent = require('./events/messageDeleted')
-const mongoose = require('mongoose')
-const userSchema = require('./schemas/user')
-mongoose.set('strictQuery', true)
-
-const emojis = ['🤫', '🤭', '😈', '🐒', '🐵', '🦧', '🤬', '😱', '🥵', '💩', '☠️']
+const messageEvent = require('./events/message')
 
 zap.create({
     sessionId: "BOT_TCHOLES",
@@ -48,97 +39,12 @@ zap.create({
         autoStart: false
     })
 
-    // await mongoose.connect('mongodb://0.0.0.0:27017/bot-zap')
     await commandHandler(client)
         .then(async () => {
             await client.queue.start()
             await crons(client)
-            await client.onMessage(async message => {
-                try {
-
-                    if (message.author === '554488471531@c.us') {
-                        const randomIndex = Math.floor(Math.random() * emojis.length)
-                        const randomEmoji = emojis[randomIndex]
-
-                        await client.react(message.id, randomEmoji)
-                    }
-
-                    await client.sendSeen(message.chatId)
-                    if (message.text) {
-
-                        // let user = await userSchema.findOne({id: message.author})
-                        // if (!user) {
-                        //     const newUser = new userSchema({
-                        //         id: message.author,
-                        //         qtdeMensagens: 1,
-                        //         banido: false
-                        //     })
-                        //     user = await newUser.save()
-                        // } else {
-                        //     user = await userSchema.findOneAndUpdate({id: message.author}, {$inc: {qtdeMensagens: 1}})
-                        // }
-                        // message.userDb = user
-
-                        if (message.text.split(' ').includes('deus')) {
-                            await client.reply(message.chatId, 'NÃO SE ESCREVE DEUS COM D MINUSCULO SEU ARROMBADO', message.id)
-                        }
-
-                        if (message.text.toLowerCase().split(' ').includes('duvido')) {
-                            await client.reply(message.chatId, 'MEU PAU NO SEU OUVIDO', message.id)
-                        }
-
-                        if (message.text.toLowerCase().split(' ').includes('atenção')) {
-                            await client.reply(message.chatId, 'MEU PAU NA SUA MÃO', message.id)
-                        }
-
-                        if (message.text.startsWith(client.prefix)) {
-                            const args = message.text.split(' ')
-                            const commandName = args.shift().replace(client.prefix, '').toLowerCase()
-
-                            let command = client.commands.get(commandName)
-                            if (command) {
-                                if (commandName === "eval") {
-                                    await command.run(client, message, args)
-                                } else {
-                                    client.queue.add(async () => await command.run(client, message, args))
-                                }
-                            }
-                        }
-                    }
-
-                    if (message.type === 'ptt') {
-                        await zap
-                            .decryptMedia(message)
-                            .then(async mediaData => {
-                                if (!fs.existsSync(path.resolve(__dirname, '../temp')))
-                                    fs.mkdirSync(path.resolve(__dirname, '../temp'))
-
-                                const filePath = path.resolve(__dirname, `../temp/${message.t}.mp3`)
-                                const stream = Readable.from(mediaData)
-                                await ffmpeg(stream)
-                                    .audioBitrate(128)
-                                    .save(filePath)
-                                    .on('error', err => console.error(err))
-                                    .on('end', async () => {
-                                        await whisper(fs.createReadStream(filePath))
-                                            .then(async result => {
-                                                if (result.text) {
-                                                    await client.reply(message.chatId, result.text, message.id)
-                                                }
-                                            })
-                                            .catch(err => console.error(err))
-
-                                        await fs.unlinkSync(filePath)
-                                    })
-                            })
-                            .catch(err => console.error(err))
-                    }
-                } catch (err) {
-                    console.error(err)
-                }
-            })
+            await client.onMessage(async message => await client.queue.add(async () => await messageEvent(client, message)))
+            await client.onMessageDeleted(async message => await client.queue.add(async () => await messageDeletedEvent(client, message)))
         })
         .catch(err => console.error(err))
-
-    await client.onMessageDeleted(async message => await messageDeletedEvent(client, message))
 }).catch(err => console.error(err))
