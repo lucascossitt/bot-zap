@@ -16,11 +16,9 @@ module.exports = {
                 const randomIndex = Math.floor(Math.random() * speakers.length)
                 await client.simulateTyping(message.chatId, true)
                 await createAudioFromText(texto, filePath, speakers[randomIndex])
-                    .then(async () => {
-                        await client.sendAudio(message.chatId, filePath, message.id)
-                        await fs.unlinkSync(filePath)
-                        await client.simulateTyping(message.chatId, false)
-                    })
+                await client.sendAudio(message.chatId, filePath, message.id)
+                await fs.unlinkSync(filePath)
+                await client.simulateTyping(message.chatId, false)
             }
         } catch (err) {
             console.error(err)
