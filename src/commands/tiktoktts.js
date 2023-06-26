@@ -17,7 +17,7 @@ module.exports = {
                 await client.simulateTyping(message.chatId, true)
                 await createAudioFromText(texto, filePath, speakers[randomIndex])
                 await client.sendAudio(message.chatId, filePath + '.mp3', message.id)
-                await fs.unlinkSync(filePath)
+                await fs.unlinkSync(filePath + '.mp3')
                 await client.simulateTyping(message.chatId, false)
             }
         } catch (err) {
