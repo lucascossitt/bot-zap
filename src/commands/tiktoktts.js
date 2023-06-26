@@ -16,7 +16,7 @@ module.exports = {
                 const randomIndex = Math.floor(Math.random() * speakers.length)
                 await client.simulateTyping(message.chatId, true)
                 await createAudioFromText(texto, filePath, speakers[randomIndex])
-                await client.sendAudio(message.chatId, filePath, message.id)
+                await client.sendAudio(message.chatId, filePath + '.mp3', message.id)
                 await fs.unlinkSync(filePath)
                 await client.simulateTyping(message.chatId, false)
             }
