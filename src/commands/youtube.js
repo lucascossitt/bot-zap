@@ -32,7 +32,7 @@ module.exports = {
                     .save(downloadPath)
                     .on('error', err => console.error(err))
                     .on('end', async () => {
-                        await client.sendImage(message.chatId, downloadPath, `download-${message.t}.mp4`, '', message.id)
+                        await client.sendImage(message.chatId, downloadPath, `youtube.mp4`, '', message.id)
                         await fs.unlinkSync(downloadPath)
                         await client.simulateTyping(message.chatId, false)
                     })

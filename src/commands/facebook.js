@@ -1,19 +1,19 @@
-const tiktok = require('tiktok-scraper-without-watermark')
+const snapsave = require('snapsave-downloader')
 
 module.exports = {
-    name: 'tiktok',
-    descricao: 'Baixa um video do tiktok',
+    name: 'facebook',
+    descricao: 'Baixa um video do facebook',
     showInHelp: true,
     run: async function (client, message, args) {
         try {
             const url = args[0]
             if (url) {
                 await client.simulateTyping(message.chatId, true)
-                await tiktok.tiktokdownload(url)
+                await snapsave(url)
                     .then(async result => {
-                        if (result && result.nowm) {
-                            const urlDownload = result.nowm
-                            await client.sendImage(message.chatId, urlDownload, 'tiktok.mp4', '', message.id)
+                        if (result && result.status && result.data.length > 0) {
+                            const urlDownload = result.data[0].url
+                            await client.sendImage(message.chatId, urlDownload, 'facebook.mp4', '', message.id)
                             await client.simulateTyping(message.chatId, false)
                         } else {
                             await client.reply(message.chatId, 'Não foi possivel fazer o download', message.id)
