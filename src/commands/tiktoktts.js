@@ -12,7 +12,7 @@ module.exports = {
         try {
             const texto = args.join(' ')
             if (texto) {
-                const filePath = path.resolve(__dirname, `../../temp/${message.t}.mp3`)
+                const filePath = path.resolve(__dirname, `../../temp/${message.t}`)
                 const randomIndex = Math.floor(Math.random() * speakers.length)
                 await client.simulateTyping(message.chatId, true)
                 await createAudioFromText(texto, filePath, speakers[randomIndex])
