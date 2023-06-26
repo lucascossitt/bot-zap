@@ -23,6 +23,7 @@
     "p-queue": "^7.3.4",
     "random-memes": "^3.1.7",
     "reddit-posts": "^1.0.4",
+    "tiktok-tts": "^1.1.9",
     "video-url-link": "^0.1.5",
     "ytdl-core": "^4.11.4",
     "ytsr": "^3.8.2"
