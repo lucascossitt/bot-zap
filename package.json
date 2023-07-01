@@ -22,7 +22,7 @@
     "reddit-posts": "^1.0.4",
     "snapsave-downloader": "^6.9.5",
     "tiktok-scraper-without-watermark": "github:MRHRTZ/Tiktok-Scraper-Without-Watermark",
-    "tiktok-tts": "^1.1.9",
+    "tiktok-tts": "^1.1.10",
     "video-url-link": "^0.1.5",
     "ytdl-core": "^4.11.4",
     "ytsr": "^3.8.2"

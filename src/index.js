@@ -35,7 +35,7 @@ zap.create({
     client.grupoTcholes = '120363021769457254@g.us'
     client.bot = '554488441949@c.us'
     client.queue = new PQueue({
-        concurrency: 2,
+        concurrency: 10,
         autoStart: false
     })
 
