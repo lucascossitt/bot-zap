@@ -11,6 +11,8 @@ module.exports = {
                     listaComandos += `*- ${value.name}:* ${value.descricao}\n\n`
             }
 
+            listaComandos += `(OBS: Sempre utilizar "!" antes de qualquer comando)`
+
             await client.sendText(message.chatId, listaComandos)
         } catch (err) {
             console.error(err)
