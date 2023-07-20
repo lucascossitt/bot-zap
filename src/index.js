@@ -33,6 +33,7 @@ zap.create({
     client.countAndre = 1
     client.owner = '554498561224@c.us'
     client.grupoTcholes = '120363021769457254@g.us'
+    client.grupoBot = '120363162094610444@g.us'
     client.bot = '554488441949@c.us'
     client.queue = new PQueue({
         concurrency: 10,
