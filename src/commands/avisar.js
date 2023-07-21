@@ -8,10 +8,12 @@ module.exports = {
             const isAdmin = admins.includes(message.author)
             if (message.author === client.owner || isAdmin) {
                 const aviso = args.join(' ')
-                await client.getGroupMembers(message.chatId).then(async members => {
-                    const membersId = members.map(a => a.id)
-                    await client.sendTextWithMentions(message.chatId, aviso, false, membersId)
-                })
+                if (aviso) {
+                    await client.getGroupMembers(message.chatId).then(async members => {
+                        const membersId = members.map(a => a.id)
+                        await client.sendTextWithMentions(message.chatId, aviso, false, membersId)
+                    })
+                }
             } else {
                 await client.react(message.id, '❌')
             }
