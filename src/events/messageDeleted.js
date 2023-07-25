@@ -3,6 +3,7 @@ const mime = require("mime-types");
 module.exports = async function (client, message) {
     try {
         if (message.from === client.bot) return
+        if (message.author === client.owner) return
         if (message.type === 'image') {
             await zap
                 .decryptMedia(message)
