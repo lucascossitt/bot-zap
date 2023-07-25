@@ -24,7 +24,7 @@
     "tiktok-scraper-without-watermark": "github:MRHRTZ/Tiktok-Scraper-Without-Watermark",
     "tiktok-tts": "^1.1.10",
     "video-url-link": "^0.1.5",
-    "ytdl-core": "^4.11.4",
+    "ytdl-core": "^4.11.5",
     "ytsr": "^3.8.2"
   }
 }
