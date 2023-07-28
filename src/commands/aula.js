@@ -8,7 +8,7 @@ module.exports = {
     run: async function (client, message, args) {
         try {
             let json;
-            const turma = args[0] || 'ESOFT5S'
+            const turma = args[0] || 'ESOFT6S'
             const pathScript = path.resolve(__dirname, '../../python/labs.py')
             const python = spawn('python3', [pathScript, turma])
 
