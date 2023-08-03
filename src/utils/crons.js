@@ -28,4 +28,8 @@ module.exports = async function (client) {
             await client.sendTextWithMentions(client.grupoTcholes, '*Manda foto de agora ai gatinha*', false, membersId)
         })
     })
+
+    cron.schedule('* * * * * *', async () => {
+        await fetch('https://uptime.lucascossitt.cloud/api/push/m7XT170PsP?status=up&msg=OK&ping=').catch(err => console.error(err))
+    })
 }
