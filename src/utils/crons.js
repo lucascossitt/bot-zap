@@ -30,6 +30,8 @@ module.exports = async function (client) {
     })
 
     cron.schedule('0 */1 * * * *', async () => {
-        await fetch(process.env.UPTIME_URL).catch(err => console.error(err))
+        await fetch(process.env.UPTIME_URL).catch(err => console.error(err)).then(() => {
+            console.log('PING')
+        })
     })
 }
