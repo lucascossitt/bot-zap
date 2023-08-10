@@ -9,7 +9,7 @@ module.exports = async function (file) {
             form.append('model', 'whisper-1')
 
             const headers = {
-                Authorization: 'Bearer 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'
+                Authorization: 'Bearer ' + process.env.OPENAI_API_KEY
             }
 
             axios

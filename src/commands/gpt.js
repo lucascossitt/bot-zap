@@ -7,7 +7,7 @@ module.exports = {
 
             const {ChatGPTAPI} = await import('chatgpt')
             const chatGPT = new ChatGPTAPI({
-                apiKey: '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'
+                apiKey: process.env.OPENAI_API_KEY
             })
 
             const texto = args.join(' ')

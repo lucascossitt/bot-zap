@@ -30,6 +30,6 @@ module.exports = async function (client) {
     })
 
     cron.schedule('0 */1 * * * *', async () => {
-        await fetch('https://uptime.lucascossitt.cloud/api/push/m7XT170PsP?status=up&msg=OK&ping=').catch(err => console.error(err))
+        await fetch(process.env.UPTIME_URL).catch(err => console.error(err))
     })
 }

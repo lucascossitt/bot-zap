@@ -1,3 +1,4 @@
+require('dotenv').config()
 const zap = require('@open-wa/wa-automate')
 const commandHandler = require('./utils/commandHandler')
 const crons = require('./utils/crons')
@@ -7,7 +8,7 @@ const messageEvent = require('./events/message')
 zap.create({
     sessionId: "BOT_TCHOLES",
     multiDevice: true,
-    authTimeout: 60,
+    authTimeout: 0,
     blockCrashLogs: true,
     disableSpins: true,
     headless: true,

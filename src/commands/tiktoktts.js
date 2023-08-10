@@ -1,7 +1,7 @@
 const { config, createAudioFromText } = require('tiktok-tts')
 const path = require('path')
 const fs = require("fs");
-config('3de8bd23fed0741832be31cbb1db51bb')
+config(process.env.TIKTOK_SESSION_ID)
 const speakers = ['br_001', 'br_003', 'br_004', 'br_005']
 
 module.exports = {
