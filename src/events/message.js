@@ -43,28 +43,30 @@ module.exports = async function (client, message) {
 
         if (message.type === 'ptt') {
             try {
-                await zap
-                    .decryptMedia(message)
-                    .then(async mediaData => {
-                        if (!fs.existsSync(path.resolve(__dirname, '../temp')))
-                            fs.mkdirSync(path.resolve(__dirname, '../temp'))
+                if (process.env.OPENAI_API_KEY) {
+                    await zap
+                        .decryptMedia(message)
+                        .then(async mediaData => {
+                            if (!fs.existsSync(path.resolve(__dirname, '../temp')))
+                                fs.mkdirSync(path.resolve(__dirname, '../temp'))
 
-                        const filePath = path.resolve(__dirname, `../temp/${message.t}.mp3`)
-                        const stream = Readable.from(mediaData)
-                        await ffmpeg(stream)
-                            .audioBitrate(128)
-                            .save(filePath)
-                            .on('error', err => console.error(err))
-                            .on('end', async () => {
-                                await whisper(fs.createReadStream(filePath))
-                                    .then(async result => {
-                                        if (result.text) {
-                                            await client.reply(message.chatId, result.text, message.id)
-                                        }
-                                    })
-                                await fs.unlinkSync(filePath)
-                            })
-                    })
+                            const filePath = path.resolve(__dirname, `../temp/${message.t}.mp3`)
+                            const stream = Readable.from(mediaData)
+                            await ffmpeg(stream)
+                                .audioBitrate(128)
+                                .save(filePath)
+                                .on('error', err => console.error(err))
+                                .on('end', async () => {
+                                    await whisper(fs.createReadStream(filePath))
+                                        .then(async result => {
+                                            if (result.text) {
+                                                await client.reply(message.chatId, result.text, message.id)
+                                            }
+                                        })
+                                    await fs.unlinkSync(filePath)
+                                })
+                        })
+                }
             } catch (err) {
              console.error(err)
             }
