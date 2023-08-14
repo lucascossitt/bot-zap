@@ -30,8 +30,14 @@ module.exports = async function (client) {
     })
 
     cron.schedule('0 */1 * * * *', async () => {
-        await fetch(process.env.UPTIME_URL).catch(err => console.error(err)).then(() => {
-            console.log('PING')
-        })
+        await client.getConnectionState()
+            .then(async state => {
+                if (state === 'CONNECTED') {
+                    await fetch(process.env.UPTIME_URL).catch(err => console.error(err)).then(() => {
+                        console.log('PING')
+                    })
+                }
+            })
+            .catch(err => console.error(err))
     })
 }
